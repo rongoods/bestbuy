@@ -17,9 +17,12 @@ def start(store):
         print("2. Show total amount in store")
         print("3. Make an order")
         print("4. Quit")
-        selection = int(input("Please choose a number: "))
+        selection = input("Please choose a number: ")
 
-        if selection == 1:
+        if selection == "":
+            print("Invalid input, enter a number 1-4.")
+
+        if selection == "1":
             products = store.get_all_products()
             if products:
                 for product in products:
@@ -27,11 +30,11 @@ def start(store):
             else:
                 print("No products available.")
 
-        elif selection == 2:
+        elif selection == "2":
             total_quantity = store.get_total_quantity()
             print(f"Total of {total_quantity} items in store")
 
-        elif selection == 3:
+        elif selection == "3":
             products = store.get_all_products()
             if not products:
                 print("There are currently no products available.")
@@ -70,7 +73,7 @@ def start(store):
             else:
                 print("No order placed.")
 
-        elif selection == 4:
+        elif selection == "4":
             break
 
         else:
