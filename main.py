@@ -9,6 +9,9 @@ product_list = [ Product("MacBook Air M2", price=1450, quantity=100),
 best_buy = Store(product_list)
 
 def start(store):
+
+    """ Displays the store menu and handles the users input"""
+
     while True:
         print()
         print("   Store Menu")
@@ -20,9 +23,11 @@ def start(store):
         selection = input("Please choose a number: ")
 
         if selection == "":
+            # Handles an invalid input
             print("Invalid input, enter a number 1-4.")
 
         if selection == "1":
+            # Displays the products in store
             products = store.get_all_products()
             if products:
                 for product in products:
@@ -31,10 +36,12 @@ def start(store):
                 print("No products available.")
 
         elif selection == "2":
+            # Displays the total quantity of items in the store
             total_quantity = store.get_total_quantity()
             print(f"Total of {total_quantity} items in store")
 
         elif selection == "3":
+            # Processes the order placed by the user
             products = store.get_all_products()
             if not products:
                 print("There are currently no products available.")
@@ -74,6 +81,7 @@ def start(store):
                 print("No order placed.")
 
         elif selection == "4":
+            # Exits the program
             break
 
         else:
@@ -81,4 +89,3 @@ def start(store):
 
 if __name__ == "__main__":
     start(best_buy)
-
