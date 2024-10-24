@@ -1,4 +1,4 @@
-
+from products import Product
 
 class Store:
     def __init__(self, products):
@@ -21,23 +21,3 @@ class Store:
         for product, quantity in shopping_list:
             total_cost += product.buy(quantity)
         return total_cost
-
-def main():
-    class Employee:
-        def __init__(self, name, salary):
-            self.name = name
-            self.salary = salary
-
-        def show(self):
-            print(f"Name: {self.name}, Salary: {self.salary}")
-            return True  # Ensure it returns True after printing
-
-    # Object creation at the end
-    new_emp = Employee("Aharon", 2000)
-    # Now calling the method and checking its return value
-    result = new_emp.show()
-    # Check if the result is True
-    print(result)  # Should output True
-
-if __name__ == "__main__":
-    main()
