@@ -1,7 +1,7 @@
 from products import Product
 
-class Store:
 
+class Store:
     """ Keeps track of the list products in the store
         Adding products
         Removing products

@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
 
+
 class Promotion(ABC):
     """ Making an Abstract Base Class for all promotions """
+
     def __init__(self, name: str):
         self.name = name
 
@@ -13,6 +15,7 @@ class Promotion(ABC):
 
 class PercentDiscount(Promotion):
     """ Applies the calculated percentage (Promotion) to the price"""
+
     def __init__(self, name: str, percent: float):
         super().__init__(name)
         self.percent = percent
@@ -24,6 +27,7 @@ class PercentDiscount(Promotion):
 
 class SecondHalfPrice(Promotion):
     """ Calculates the 50% off promotion for the second item """
+
     def __init__(self, name: str):
         super().__init__(name)
 
@@ -35,6 +39,7 @@ class SecondHalfPrice(Promotion):
 
 class ThirdOneFree(Promotion):
     """ Calculates the free third item promotion for the third item """
+
     def __init__(self, name: str):
         super().__init__(name)
 

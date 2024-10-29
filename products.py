@@ -1,7 +1,9 @@
 from promotion import Promotion, PercentDiscount, SecondHalfPrice, ThirdOneFree
 
+
 class Product:
     """ Displays the products available in the store. """
+
     def __init__(self, name: str, price: float, quantity: int):
         """ Initializes a new Product """
         if not name or price < 0 or quantity < 0:
@@ -72,11 +74,12 @@ class Product:
 
 class NonStockedProduct(Product):
     """ These products are not physical so the quantities are not tracked. """
+
     def __init__(self, name: str, price: float):
         super().__init__(name, price, quantity=0)
 
     def set_quantity(self, quantity):
-        self.quantity = 0 # Quantity set to 0 because products are not physical
+        self.quantity = 0  # Quantity set to 0 because products are not physical
 
     def buy(self, quantity) -> float:
         if quantity <= 0:
@@ -87,8 +90,10 @@ class NonStockedProduct(Product):
         """ Show that the product is not in stock. """
         return f"{self.name} is not in stock."
 
+
 class LimitedProduct(Product):
     """ Products that can be purchased a maximum amount of times. """
+
     def __init__(self, name: str, price: float, quantity: int, maximum: int):
         super().__init__(name, price, quantity)
         self.maximum = maximum

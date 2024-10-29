@@ -3,12 +3,12 @@ from products import Product, NonStockedProduct, LimitedProduct
 from promotion import Promotion, SecondHalfPrice, ThirdOneFree, PercentDiscount
 
 # setup initial stock of inventory
-product_list = [ Product("MacBook Air M2", price=1450, quantity=100),
-                 Product("Bose QuietComfort Earbuds", price=250, quantity=500),
-                 Product("Google Pixel 7", price=500, quantity=250),
-                 NonStockedProduct("Windows License", price=125),
-                 LimitedProduct("Shipping", price=10, quantity=250, maximum=1)
-               ]
+product_list = [Product("MacBook Air M2", price=1450, quantity=100),
+                Product("Bose QuietComfort Earbuds", price=250, quantity=500),
+                Product("Google Pixel 7", price=500, quantity=250),
+                NonStockedProduct("Windows License", price=125),
+                LimitedProduct("Shipping", price=10, quantity=250, maximum=1)
+                ]
 
 # Create promotion catalog
 second_half_price = SecondHalfPrice("Second Half price!")
@@ -24,7 +24,6 @@ best_buy = Store(product_list)
 
 
 def start(store):
-
     """ Displays the store menu and handles the users input"""
 
     while True:
@@ -83,7 +82,7 @@ def start(store):
                     if quantity <= 0:
                         print("Quantity entered must be greater than 0.")
                         continue
-                    shopping_list.append((products[product_number -1], quantity))
+                    shopping_list.append((products[product_number - 1], quantity))
                 except ValueError:
                     print("Invalid input.")
 
@@ -101,6 +100,7 @@ def start(store):
 
         else:
             start(best_buy)
+
 
 if __name__ == "__main__":
     start(best_buy)
