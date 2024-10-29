@@ -36,4 +36,4 @@ def test_buying_larger_quantity_than_exist_raises_exception():
     """ Test that when a order amount is higher than the quantity that's available it raises an Exception. """
     product = Product("MacBook Air M2", price=1450, quantity=100)
     with pytest.raises(ValueError):
-        product.buy(101)
+        product.buy(101) # Buy that is placed is a higher amount than quantity available

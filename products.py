@@ -49,3 +49,37 @@ class Product:
         total_price = self.price * quantity
         self.set_quantity(self.quantity - quantity)
         return total_price
+
+
+class NonStockedProduct(Product):
+    """ These products are not physical so the quantities are not tracked. """
+    def __init__(self, name: str, price: float):
+        super().__init__(name, price, quantity=0)
+
+    def set_quantity(self, quantity):
+        self.quantity = 0 # Quantity set to 0 because products are not physical
+
+    def buy(self, quantity) -> float:
+        if quantity <= 0:
+            raise ValueError("You must purchase a product to continue.")
+        return self.price * quantity
+
+    def show(self) -> str:
+        """ Show that the product is not in stock. """
+        return f"{self.name} is not in stock."
+
+class LimitedProduct(Product):
+    """ Products that can be purchased a maximum amount of times. """
+    def __init__(self, name: str, price: float, quantity: int, maximum: int):
+        super().__init__(name, price, quantity)
+        self.maximum = maximum
+
+    def buy(self, quantity) -> float:
+        """ Raises ValueError is the maximum quantity is reached. """
+        if quantity > self.maximum:
+            raise ValueError(f"Maximum amount that can be ordered for this item is {self.maximum}.")
+        return super().buy(quantity)
+
+    def show(self) -> str:
+        """ Show the maximum limit for the Limited Product """
+        return f"{self.name} has a max limit order or {self.maximum} per order, Price: {self.price}, Quantity: {self.quantity}."
