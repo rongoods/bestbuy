@@ -1,3 +1,5 @@
+from promotion import Promotion, PercentDiscount, SecondHalfPrice, ThirdOneFree
+
 class Product:
     """ Displays the products available in the store. """
     def __init__(self, name: str, price: float, quantity: int):
@@ -8,6 +10,7 @@ class Product:
         self.price = price
         self.quantity = quantity
         self.active = True
+        self.promotion = None
 
     def get_quantity(self) -> float:
         """Returns a float of the quantity of the product"""
@@ -32,8 +35,20 @@ class Product:
         """" Sets product to inactive"""
         self.active = False
 
+    def get_promotion(self) -> Promotion:
+        """ Returns the promotion if it qualifies """
+        return self.promotion
+
+    def set_promotion(self, promotion: Promotion):
+        """ Assigns the promotion to the product """
+        self.promotion = promotion
+
     def show(self) -> str:
-        """Returns a string showing the products name, price and quantity"""
+        """Returns a string showing the products name, price and quantity / if a promotion applies the promotion """
+        if self.promotion:
+            promotion_announcement = f"Promotion: {self.promotion.name}"
+        else:
+            promotion_announcement = ""
         return f"{self.name}, Price: {self.price}, Quantity: {self.quantity}"
 
     def buy(self, quantity) -> float:
@@ -46,7 +61,11 @@ class Product:
         if not self.active:
             raise Exception("Product is not currently (active) available for purchase.")
 
-        total_price = self.price * quantity
+        if self.promotion:
+            total_price = self.promotion.apply_promotion(self, quantity)
+        else:
+            total_price = self.price * quantity
+
         self.set_quantity(self.quantity - quantity)
         return total_price
 
