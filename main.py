@@ -2,33 +2,34 @@ from store import Store
 from products import Product, NonStockedProduct, LimitedProduct
 from promotion import Promotion, SecondHalfPrice, ThirdOneFree, PercentDiscount
 
-# setup initial stock of inventory
-product_list = [Product("MacBook Air M2", price=1450, quantity=100),
-                Product("Bose QuietComfort Earbuds", price=250, quantity=500),
-                Product("Google Pixel 7", price=500, quantity=250),
-                NonStockedProduct("Windows License", price=125),
-                LimitedProduct("Shipping", price=10, quantity=250, maximum=1)
-                ]
 
-# Create promotion catalog
-second_half_price = SecondHalfPrice("Second Half price!")
-third_one_free = ThirdOneFree("Third One Free!")
-thirty_percent = PercentDiscount("30% off!", percent=30)
+def default_stock():
+    """Sets up the initial stock of inventory."""
+    product_list = [
+        Product("MacBook Air M2", price=1450, quantity=100),
+        Product("Bose QuietComfort Earbuds", price=250, quantity=500),
+        Product("Google Pixel 7", price=500, quantity=250),
+        NonStockedProduct("Windows License", price=125),
+        LimitedProduct("Shipping", price=10, quantity=250, maximum=1)
+    ]
 
-# Add promotions to products
-product_list[0].set_promotion(second_half_price)
-product_list[1].set_promotion(third_one_free)
-product_list[3].set_promotion(thirty_percent)
+    # Create promotion catalog
+    second_half_price = SecondHalfPrice("Second Half price!")
+    third_one_free = ThirdOneFree("Third One Free!")
+    thirty_percent = PercentDiscount("30% off!", percent=30)
 
-best_buy = Store(product_list)
+    # Add promotions to products
+    product_list[0].set_promotion(second_half_price)
+    product_list[1].set_promotion(third_one_free)
+    product_list[3].set_promotion(thirty_percent)
+
+    return Store(product_list)
 
 
 def start(store):
-    """ Displays the store menu and handles the users input"""
-
+    """Displays the store menu and handles the user's input."""
     while True:
-        print()
-        print("   Store Menu")
+        print("\n   Store Menu")
         print("   ----------")
         print("1. List all products in store")
         print("2. Show total amount in store")
@@ -36,12 +37,7 @@ def start(store):
         print("4. Quit")
         selection = input("Please choose a number: ")
 
-        if selection == "":
-            # Handles an invalid input
-            print("Invalid input, enter a number 1-4.")
-
         if selection == "1":
-            # Displays the products in store
             products = store.get_all_products()
             if products:
                 for product in products:
@@ -50,12 +46,10 @@ def start(store):
                 print("No products available.")
 
         elif selection == "2":
-            # Displays the total quantity of items in the store
             total_quantity = store.get_total_quantity()
             print(f"Total of {total_quantity} items in store")
 
         elif selection == "3":
-            # Processes the order placed by the user
             products = store.get_all_products()
             if not products:
                 print("There are currently no products available.")
@@ -82,25 +76,40 @@ def start(store):
                     if quantity <= 0:
                         print("Quantity entered must be greater than 0.")
                         continue
-                    shopping_list.append((products[product_number - 1], quantity))
+
+                    product = products[product_number - 1]
+                    if product.is_limited() and quantity > product.get_maximum():
+                        print(f"You can only order a maximum of {product.get_maximum()} of this item.")
+                        continue
+                    elif product.quantity < quantity:
+                        print(f"Not enough stock available. Only {product.quantity} left.")
+                        continue
+
+                    shopping_list.append((product, quantity))
                 except ValueError:
                     print("Invalid input.")
 
             if shopping_list:
                 try:
-                    store.order(shopping_list)
+                    total_price = store.order(shopping_list)
+                    print(f"Order placed successfully! Total cost: ${total_price:.2f}")
+
+                    # Print updated product quantities
+                    print("Updated product quantities:")
+                    for product, _ in shopping_list:
+                        print(f"{product.name}: {product.get_quantity()} left")
                 except Exception as e:
-                    print(f"Exception error: {e}")
+                    print(f"Error processing order: {str(e)}")
             else:
                 print("No order placed.")
 
         elif selection == "4":
-            # Exits the program
             break
 
         else:
-            start(best_buy)
+            print("Invalid input, enter a number 1-4.")
 
 
 if __name__ == "__main__":
+    best_buy = default_stock()
     start(best_buy)
